@@ -28,7 +28,7 @@ public class Service {
 
     }
 
-    public StringBuilder showLog(File file) throws FileNotFoundException {
+    public void showLog(File file) throws FileNotFoundException {
 
         StringBuilder msg = new StringBuilder();
 
@@ -36,14 +36,13 @@ public class Service {
             Scanner scanner = new Scanner(reader)) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                msg.append(line);
+                System.out.println(line);
             }
         } catch (FileNotFoundException e){
             throw new FileNotFoundException("Fil " + file.getName() + " ikke fundet.");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return msg;
     }
 
 }

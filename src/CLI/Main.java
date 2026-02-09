@@ -31,7 +31,7 @@ public class Main {
     }
 
     private static void initialize(){
-        file = new File("src/Log.txt");
+        file = new File("src/Log");
 
 
         ship = new Ship();
