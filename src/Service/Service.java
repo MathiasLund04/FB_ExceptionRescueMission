@@ -50,7 +50,6 @@ public class Service {
     }
     public void checkCriticalStatus(){
 
-
     }
 
     public Boolean validateTrade(int amount){
@@ -74,8 +73,8 @@ public class Service {
     public void updateLog(String message,File file) throws FileNotFoundException {
 
         if (file.exists()) {
-            try(FileWriter writer = new FileWriter(file)){
-                writer.write(message);
+            try(FileWriter writer = new FileWriter(file,true)) {
+                writer.write("\n"+message);
             } catch (FileNotFoundException e){
                 throw new FileNotFoundException("Fil " + file.getName() + " ikke fundet.");
             } catch (IOException e) {

@@ -16,6 +16,7 @@ public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
         initialize();
+
         System.out.println("========================================");
         System.out.println(" RUMEVENTYR - EXCEPTION RESCUE MISSION ");
         System.out.println("========================================\n");
