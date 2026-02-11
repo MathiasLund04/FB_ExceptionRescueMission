@@ -14,7 +14,7 @@ public class Main {
     public static Service service = new Service();
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         initialize();
         System.out.println("========================================");
         System.out.println(" RUMEVENTYR - EXCEPTION RESCUE MISSION ");
@@ -26,8 +26,15 @@ public class Main {
         String shipName = input.nextLine();
         System.out.println(" ");
         ship = new Ship(shipName, captainName);
+        service.updateLog("Start velkommen Kaptajn " + captainName + " på skibet " + shipName,file);
 
         printStatus();
+
+        try {
+            service.showLog(file);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void initialize(){
@@ -58,26 +65,7 @@ public class Main {
         } else {
             System.out.println("Repair Kit: Ikke brugt");
         }
-        try {
-            service.showLog(file);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
 
         System.out.println("----------------------------------------");
-    }
-
-    private static int getChoice(Scanner input){
-        int choice = 0;
-        while (true){
-            try {
-                choice = input.nextInt();
-                break;
-            } catch (NumberFormatException e){
-                System.out.println("Venligst indtast et tal.");
-                input.next();
-            }
-        }
-        return choice;
     }
 }
