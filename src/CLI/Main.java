@@ -6,7 +6,6 @@ import Service.Service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -64,7 +63,7 @@ public class Main {
             // Event 3
             service.eventEngine(input);
 
-            //Sejrsbesked
+            //Sejrs-besked
             System.out.println("Du overlevede rejsen gennem galaksen\n");
         } catch (CriticalStatusException e){
             System.out.println("Du overlevede ikke... " +

@@ -68,7 +68,7 @@ public class Service {
         int integrityDamage = (int) (Math.random() * 30) + 10; // Skaden kan være mellem 10 til 40
 
         if (ship.getFuel() < 5)
-        if (ship.getShieldLevel() > 0) {
+            if (ship.getShieldLevel() > 0) {
             integrityDamage -= (ship.getShieldLevel() * 2);
             if (integrityDamage < 0) integrityDamage = 0;
         }
@@ -216,11 +216,16 @@ public class Service {
         int fuelConvert;
         boolean validCheck = true;
         while (validCheck) {
-            System.out.println("Hvor mange reservedele vil du bytte? (1:5)");
-            amount = input.nextInt();
-            if(validateTrade(amount) == true){
-                validCheck = false;
-                tradedAmount = amount;
+            try {
+                System.out.println("Hvor mange reservedele vil du bytte? (1:5)");
+                amount = input.nextInt();
+
+                if(validateTrade(amount)){
+                    validCheck = false;
+                    tradedAmount = amount;
+                }
+            }catch (InvalidTradeException | IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
         }
 
@@ -236,12 +241,16 @@ public class Service {
     }
     public void buyShield(){
         int spareParts = ship.getSpareParts();
-        validateTrade(spareParts);
-        if(validateTrade(spareParts)) {
-            ship.setShieldLevel(1);
-            ship.setSpareParts(ship.getSpareParts()-4);
-            System.out.println("Shield level 1 aktiveret");
-            logTrade("Shield 1 købt");
+        try {
+            validateTrade(spareParts);
+            if (validateTrade(spareParts)) {
+                ship.setShieldLevel(1);
+                ship.setSpareParts(ship.getSpareParts() - 4);
+                System.out.println("Shield level 1 aktiveret");
+                logTrade("Shield 1 købt");
+            }
+        } catch (InvalidTradeException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
         printStatus();
     }
@@ -275,7 +284,6 @@ public class Service {
                  choice = checkChoice(input);
              }
 
-
         }
         restartEngine();
         System.out.println("\n");
@@ -285,7 +293,7 @@ public class Service {
     }
 
     //EVENT 3 METODER
-    public int restartEngine(){
+    public void restartEngine(){
         int starting;
         int unluckyTries = 0;
         boolean success = false;
@@ -323,7 +331,6 @@ public class Service {
                 }
             }
         }
-        return unluckyTries;
     }
     public void logEngine(String message){
         try {
