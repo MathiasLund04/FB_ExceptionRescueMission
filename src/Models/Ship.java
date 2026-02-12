@@ -72,5 +72,6 @@ public class Ship {
         return repairKitUsed;
     }
 
-
+    public void log(String s) {
+    }
 }

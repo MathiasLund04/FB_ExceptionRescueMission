@@ -1,10 +1,12 @@
 package CLI;
 
+import Exceptions.CriticalStatusException;
 import Models.Ship;
 import Service.Service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -16,29 +18,64 @@ public class Main {
     public static Service service = new Service(ship,file);
 
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
+        String captainName;
+        String shipName;
         service.initialize();
 
         System.out.println("========================================");
         System.out.println(" RUMEVENTYR - EXCEPTION RESCUE MISSION ");
         System.out.println("========================================\n");
         System.out.println("Velkommen Kaptajn");
-        System.out.print("Indtast dit navn: \n> ");
-        String captainName = input.nextLine();
-        System.out.print("Indtast navnet på skibet: \n> ");
-        String shipName = input.nextLine();
-        System.out.println(" ");
-        ship = new Ship(shipName, captainName);
-        service.updateLog("Start velkommen Kaptajn " + captainName + " på skibet " + shipName,file);
+        do {
+
+            System.out.print("Indtast dit navn: \n> ");
+            captainName = input.nextLine().trim();
+            if (captainName.isEmpty()) {
+                System.out.println("Feltet må ikke være tomt ");
+            }
+        }   while(captainName.isEmpty());
+
+        do {
+                System.out.print("Indtast navnet på skibet: \n> ");
+                shipName = input.nextLine().trim();
+            if (shipName.isEmpty()) {
+                System.out.println("Feltet må ikke være tomt ");
+            }
+        }   while(shipName.isEmpty());
+
+            System.out.println(" ");
+            ship = new Ship(shipName, captainName);
+
+        try {
+            service.updateLog("START: velkommen Kaptajn " + captainName + " på skibet " + shipName, file);
+        } catch (FileNotFoundException e){
+            throw new RuntimeException(e);
+        }
 
         service.printStatus();
+        try {
+            // Event 1
+            service.eventStorm(input);
 
-        service.eventTrade(input);
+            // Event 2
+            service.eventTrade(input);
+
+            // Event 3
+            service.eventEngine(input);
+
+            //Sejrsbesked
+            System.out.println("Du overlevede rejsen gennem galaksen\n");
+        } catch (CriticalStatusException e){
+            System.out.println("Du overlevede ikke... " +
+                    "\nGAME OVER\n");
+        }
 
         try {
             service.showLog(file);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+
     }
 }
