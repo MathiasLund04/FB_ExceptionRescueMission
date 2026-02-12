@@ -7,15 +7,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+
+
 public class Main {
     public static Scanner input = new Scanner(System.in);
-    public static Ship ship;
-    public static File file;
-    public static Service service = new Service();
+    private static Ship ship = new Ship();
+    private static final File file= new File("src/Log");
+    public static Service service = new Service(ship,file);
 
 
     public static void main(String[] args) throws FileNotFoundException {
-        initialize();
+        service.initialize();
 
         System.out.println("========================================");
         System.out.println(" RUMEVENTYR - EXCEPTION RESCUE MISSION ");
@@ -29,44 +31,14 @@ public class Main {
         ship = new Ship(shipName, captainName);
         service.updateLog("Start velkommen Kaptajn " + captainName + " på skibet " + shipName,file);
 
-        printStatus();
+        service.printStatus();
+
+        service.eventTrade(input);
 
         try {
             service.showLog(file);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static void initialize(){
-        file = new File("src/Log");
-
-
-        ship = new Ship();
-        ship.setCaptainName(" ");
-        ship.setCaptainName(" ");
-        ship.setFuel(100);
-        ship.setIntegrity(100);
-        ship.setSpareParts(10);
-        ship.setShieldLevel(0);
-        ship.setRepairKitUsed(false);
-
-    }
-
-    private static void printStatus(){
-        System.out.println("----------------------------------------");
-        System.out.println("STATUS");
-        System.out.println("Brændstof: " + ship.getFuel() +
-                "\nIntegritet: " + ship.getIntegrity() +
-                "\nReservedele: " + ship.getSpareParts() +
-                "\nShield: " + ship.getShieldLevel()
-        );
-        if (ship.getRepairKitUsed()){
-            System.out.println("Repair Kit: Brugt");
-        } else {
-            System.out.println("Repair Kit: Ikke brugt");
-        }
-
-        System.out.println("----------------------------------------");
     }
 }
