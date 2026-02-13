@@ -11,7 +11,10 @@
     - InvalidTradeException kastes ved validateTrade og fanges i de metoder hvori den bliver kaldt.
   
 * **En kort testliste med 6 til 10 punkter over hvad du selv har prøvet**
-    - I Main når programmet spørg om Kaptaijn og skibs navn har vi testet at man ikke kan efterlade fæltet tomt
-    - Vi har testet at man ikke kan skrive bogstaver når der skal bruges tal.
-    - Vi har testet at man skriver et tal som ikke er gyldigt
-    - 
+    1. Tomt input ved kaptan- og skibsnavn - Programmet accepterer ikke tomme felter og kræver gyldigt input
+    2. Bogstaver som menu-valg - Når der skal skrives tal, kastes InputMismatchException og brugeren får besked: "Du skal skrive et tal"
+    3. Negativt antal reservedele ved handel - validateTrade() kaster IllegalArgumentException med besked: "Antal reservedele kan ikke være negativt"
+    4. Ikke nok reservedele til shield-køb - validateTrade() kaster InvalidTradeException når man prøver at købe shield uden nok dele
+    5. Ikke nok brændstof til omvej - takeDetour() kaster IllegalArgumentException: "Ikke nok brandstof til at tage en længere omvej"
+    6. Kritisk lav integritet efter storm - Hvis integritet falder under 20, kastes CriticalStatusException og spillet slutter
+    7. Motoren genstart efter 2 fejlede forsøg - Efter 2 fejlede genstarts kastes CriticalStatusException: "Motor er i kritisk tilstand"
