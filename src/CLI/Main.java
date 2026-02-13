@@ -68,6 +68,13 @@ public class Main {
         } catch (CriticalStatusException e){
             System.out.println("Du overlevede ikke... " +
                     "\nGAME OVER\n");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Fejl under missionen: " + e.getMessage() +
+                    "\nGAME OVER\n");
+        } catch (Exception e) {
+            System.out.println("Uventet fejl: " + e.getMessage() +
+                    "\nGAME OVER\n");
+            e.printStackTrace();
         }
 
         try {

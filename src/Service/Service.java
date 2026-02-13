@@ -34,9 +34,9 @@ public class Service {
         int choice = checkChoice(input);
 
 
-        try {
             boolean running = true;
         while(running) {
+        try {
             switch (choice) {
                 case 1 -> {
                     flyThroughStorm();
@@ -50,10 +50,10 @@ public class Service {
                     choice = checkChoice(input);
                 }
             }
-        }
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             System.out.println("Fejl under storm-event: " + e.getMessage());
             logStorm("Stormfejl: " + e.getMessage());
+            }
         }
         //Efter event
         printStatus();
@@ -67,8 +67,7 @@ public class Service {
     private void flyThroughStorm() {
         int integrityDamage = (int) (Math.random() * 30) + 10; // Skaden kan være mellem 10 til 40
 
-        if (ship.getFuel() < 5)
-            if (ship.getShieldLevel() > 0) {
+        if (ship.getFuel() < 5 && ship.getShieldLevel() > 0) {
             integrityDamage -= (ship.getShieldLevel() * 2);
             if (integrityDamage < 0) integrityDamage = 0;
         }
@@ -130,7 +129,7 @@ public class Service {
                             """);
                         boolean internalMenu = true;
                     while (internalMenu) {
-                        switch (input.nextInt()) {
+                        switch (checkChoice(input)) {
                             case 1 -> {
                                 buyShield();
                                 internalMenu = false;
@@ -156,7 +155,7 @@ public class Service {
                             """);
                     boolean internalMenu = true;
                     while (internalMenu) {
-                        switch (input.nextInt()) {
+                        switch (checkChoice(input)) {
                             case 1 -> {
                                 buyFuel();
                                 internalMenu = false;
@@ -215,10 +214,12 @@ public class Service {
         int amount = 0;
         int fuelConvert;
         boolean validCheck = true;
+
         while (validCheck) {
             try {
                 System.out.println("Hvor mange reservedele vil du bytte? (1:5)");
                 amount = input.nextInt();
+                input.nextLine();
 
                 if(validateTrade(amount)){
                     validCheck = false;
@@ -226,6 +227,10 @@ public class Service {
                 }
             }catch (InvalidTradeException | IllegalArgumentException e) {
                 System.out.println(e.getMessage());
+                input.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Du skal skrive et tal");
+                input.nextLine();
             }
         }
 
@@ -240,12 +245,12 @@ public class Service {
 
     }
     public void buyShield(){
-        int spareParts = ship.getSpareParts();
+        int amount = 4;
         try {
-            validateTrade(spareParts);
-            if (validateTrade(spareParts)) {
+            validateTrade(amount);
+            if (validateTrade(amount)) {
                 ship.setShieldLevel(1);
-                ship.setSpareParts(ship.getSpareParts() - 4);
+                ship.setSpareParts(ship.getSpareParts() - amount);
                 System.out.println("Shield level 1 aktiveret");
                 logTrade("Shield 1 købt");
             }
@@ -285,7 +290,12 @@ public class Service {
              }
 
         }
-        restartEngine();
+        try {
+            restartEngine();
+        } catch (CriticalStatusException e) {
+            logEngine("Kritisk fejl under motor genstart: " + e.getMessage());
+        }
+
         System.out.println("\n");
         printStatus();
         System.out.println("\nMISSION FULDFØRT\n");
