@@ -433,7 +433,7 @@ public class Service {
         }
         ship = new Ship();
         ship.setCaptainName(" ");
-        ship.setCaptainName(" ");
+        ship.setShipName(" ");
         ship.setFuel(100);
         ship.setIntegrity(100);
         ship.setSpareParts(10);
